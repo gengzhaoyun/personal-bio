@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>耿召云 - 前端AI应用开发工程师</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #121217;
+      --bg-card: #1c1c24;
+      --bg-card-hover: #23232d;
+      --text-primary: #e8e8ed;
+      --text-secondary: #8a8a95;
+      --accent: #d4a853;
+      --accent-dim: rgba(212, 168, 83, 0.12);
+      --border: #2a2a35;
+      --font-sans: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace;
+      --max-width: 820px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-image:
+        radial-gradient(ellipse at 20% 0%, rgba(212, 168, 83, 0.03) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 100%, rgba(212, 168, 83, 0.02) 0%, transparent 60%);
+    }
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 80px 32px;
+    }
+
+    .section {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section+.section {
+      margin-top: 64px;
+    }
+
+    .header {
+      text-align: center;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .name {
+      font-size: 52px;
+      font-weight: 900;
+      letter-spacing: 6px;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      font-family: var(--font-sans);
+    }
+
+    .name .dot {
+      color: var(--accent);
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 24px;
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(212, 168, 83, 0.3);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 0 40px rgba(212, 168, 83, 0.08), 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .avatar:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 60px rgba(212, 168, 83, 0.15), 0 8px 30px rgba(0, 0, 0, 0.4);
+      transform: scale(1.04);
+    }
+
+    .avatar-ring {
+      position: absolute;
+      top: -6px;
+      left: -6px;
+      width: calc(100% + 12px);
+      height: calc(100% + 12px);
+      border-radius: 50%;
+      border: 1px dashed rgba(212, 168, 83, 0.2);
+      animation: avatar-spin 30s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes avatar-spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--accent);
+      font-weight: 500;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      margin-bottom: 24px;
+    }
+
+    .contact {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.3s;
+    }
+
+    .contact-item:hover {
+      color: var(--accent);
+    }
+
+    .contact-icon {
+      width: 16px;
+      height: 16px;
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      margin-bottom: 28px;
+      position: relative;
+      padding-left: 20px;
+    }
+
+    .section-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 18px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .edu-block {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .edu-main h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .edu-main .edu-meta {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+    }
+
+    .edu-time {
+      font-size: 14px;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      white-space: nowrap;
+    }
+
+    .edu-courses {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .course-tag {
+      font-size: 12px;
+      padding: 3px 12px;
+      border-radius: 20px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      font-family: var(--font-mono);
+      border: 1px solid rgba(212, 168, 83, 0.18);
+      transition: all 0.3s;
+    }
+
+    .course-tag:hover {
+      background: rgba(212, 168, 83, 0.22);
+      border-color: rgba(212, 168, 83, 0.35);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .skill-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .skill-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(212, 168, 83, 0.25);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .skill-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .skill-card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .skill-card-icon.frontend {
+      background: rgba(212, 168, 83, 0.15);
+      color: var(--accent);
+    }
+
+    .skill-card-icon.ai {
+      background: rgba(139, 148, 255, 0.15);
+      color: #8b94ff;
+    }
+
+    .skill-card-icon.backend {
+      background: rgba(94, 216, 178, 0.15);
+      color: #5ed8b2;
+    }
+
+    .skill-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .skill-tag {
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.25s;
+    }
+
+    .skill-tag:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card+.project-card {
+      margin-top: 28px;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .project-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(212, 168, 83, 0.2);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .project-card:hover::before {
+      opacity: 1;
+    }
+
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .project-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .project-badge {
+      font-size: 11px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      font-family: var(--font-mono);
+      letter-spacing: 2px;
+      white-space: nowrap;
+    }
+
+    .project-meta {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      margin-bottom: 16px;
+    }
+
+    .project-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 18px;
+    }
+
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 20px;
+    }
+
+    .tech-tag {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      transition: all 0.25s;
+    }
+
+    .tech-tag:hover {
+      color: var(--accent);
+      border-color: rgba(212, 168, 83, 0.3);
+      background: rgba(212, 168, 83, 0.06);
+    }
+
+    .project-results {
+      list-style: none;
+      padding: 0;
+    }
+
+    .project-results li {
+      position: relative;
+      padding-left: 22px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 10px;
+      transition: color 0.3s;
+    }
+
+    .project-results li:hover {
+      color: var(--text-primary);
+    }
+
+    .project-results li::before {
+      content: '';
+      position: absolute;
+      left: 2px;
+      top: 9px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.5;
+      transition: all 0.3s;
+    }
+
+    .project-results li:hover::before {
+      opacity: 1;
+      box-shadow: 0 0 8px rgba(212, 168, 83, 0.4);
+    }
+
+    .highlight {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .eval-list {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      gap: 18px;
+    }
+
+    .eval-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 20px 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .eval-item:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(212, 168, 83, 0.2);
+      transform: translateX(4px);
+    }
+
+    .eval-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      margin-top: 8px;
+    }
+
+    .eval-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    .footer {
+      text-align: center;
+      padding-top: 48px;
+      margin-top: 64px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      letter-spacing: 2px;
+    }
+
+    .bg-decoration {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.03;
+    }
+
+    .bg-decoration .code-line {
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 48px 20px;
+      }
+
+      .name {
+        font-size: 36px;
+        letter-spacing: 4px;
+      }
+
+      .subtitle {
+        font-size: 14px;
+        letter-spacing: 2px;
+      }
+
+      .contact {
+        gap: 16px;
+        font-size: 12px;
+      }
+
+      .section+.section {
+        margin-top: 44px;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .edu-block {
+        flex-direction: column;
+      }
+
+      .project-card {
+        padding: 24px 20px;
+      }
+
+      .project-results li {
+        font-size: 13px;
+      }
+
+      .avatar {
+        width: 90px;
+        height: 90px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        color: #1a1a1f;
+      }
+
+      .container {
+        max-width: 100%;
+        padding: 20px 32px;
+      }
+
+      .section {
+        opacity: 1;
+        transform: none;
+      }
+
+      .header::after {
+        background: #333;
+      }
+
+      .name {
+        color: #1a1a1f;
+        font-size: 28px;
+      }
+
+      .subtitle {
+        color: #555;
+      }
+
+      .contact {
+        color: #555;
+      }
+
+      .section-title {
+        color: #555;
+      }
+
+      .section-title::before {
+        background: #555;
+      }
+
+      .skill-card,
+      .project-card,
+      .eval-item {
+        background: #fafafa;
+        border: 1px solid #e0e0e0;
+        box-shadow: none;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .skill-card:hover,
+      .project-card:hover,
+      .eval-item:hover {
+        transform: none;
+        box-shadow: none;
+        background: #fafafa;
+      }
+
+      .project-card::before {
+        display: none;
+      }
+
+      .skill-tag,
+      .tech-tag,
+      .course-tag {
+        border: 1px solid #ddd;
+        background: #f5f5f5;
+        color: #333;
+      }
+
+      .project-results li {
+        color: #333;
+      }
+
+      .highlight {
+        color: #8b6914;
+      }
+
+      .eval-text {
+        color: #333;
+      }
+
+      .section+.section {
+        margin-top: 28px;
+      }
+
+      .footer {
+        display: none;
+      }
+
+      .bg-decoration {
+        display: none;
+      }
+
+      .avatar-ring {
+        display: none;
+      }
+
+      .avatar {
+        border-color: #ccc;
+        box-shadow: none;
+        filter: none;
+      }
+
+      .avatar:hover {
+        transform: none;
+      }
+
+      @page {
+        margin: 1cm;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <header class="header section">
+      <div class="avatar-wrapper">
+        <div class="avatar-ring"></div>
+        <img class="avatar" src="portrait.jpg" alt="耿召云" />
+      </div>
+      <h1 class="name">耿 召 云<span class="dot">.</span></h1>
+      <p class="subtitle">前端开发工程师 · AI应用开发方向</p>
+      <div class="contact">
+        <span class="contact-item">
+          <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="5" y="2" width="14" height="20" rx="2" />
+            <line x1="12" y1="18" x2="12.01" y2="18" />
+          </svg>
+          18884942762
+        </span>
+        <span class="contact-item">
+          <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="M22 4L12 13 2 4" />
+          </svg>
+          mengzez@qq.com
+        </span>
+        <span class="contact-item">
+          <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="10" r="3" />
+            <path d="M12 21c0 0-7-7-7-11a7 7 0 1114 0c0 4-7 11-7 11z" />
+          </svg>
+          贵州贵阳
+        </span>
+      </div>
+    </header>
+
+    <section class="section" style="transition-delay: 0.1s;">
+      <h2 class="section-title">教育背景</h2>
+      <div class="edu-block">
+        <div class="edu-main">
+          <h3>贵州装备制造职业学院</h3>
+          <p class="edu-meta">专科 · 计算机应用技术</p>
+          <div class="edu-courses">
+            <span class="course-tag">Web前端开发</span>
+            <span class="course-tag">JavaScript程序设计</span>
+            <span class="course-tag">数据库原理</span>
+            <span class="course-tag">软件工程</span>
+            <span class="course-tag">Python程序设计</span>
+          </div>
+        </div>
+        <span class="edu-time">2024.09 - 2027.06</span>
+      </div>
+    </section>
+
+    <section class="section" style="transition-delay: 0.15s;">
+      <h2 class="section-title">专业技能</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-card-header">
+            <div class="skill-card-icon frontend">&lt;/&gt;</div>
+            <span class="skill-card-title">前端开发</span>
+          </div>
+          <div class="skill-tags">
+            <span class="skill-tag">Vue3 全家桶</span>
+            <span class="skill-tag">Vue Router</span>
+            <span class="skill-tag">Pinia</span>
+            <span class="skill-tag">TypeScript</span>
+            <span class="skill-tag">ES6+</span>
+            <span class="skill-tag">Element Plus</span>
+            <span class="skill-tag">Vite</span>
+            <span class="skill-tag">组件化开发</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-header">
+            <div class="skill-card-icon ai">AI</div>
+            <span class="skill-card-title">AI 开发</span>
+          </div>
+          <div class="skill-tags">
+            <span class="skill-tag">AI Agent</span>
+            <span class="skill-tag">大模型 API</span>
+            <span class="skill-tag">LangChain</span>
+            <span class="skill-tag">流式对话</span>
+            <span class="skill-tag">RAG</span>
+            <span class="skill-tag">向量数据库</span>
+            <span class="skill-tag">AI 工作流</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-header">
+            <div class="skill-card-icon backend">{ }</div>
+            <span class="skill-card-title">后端基础</span>
+          </div>
+          <div class="skill-tags">
+            <span class="skill-tag">Node.js</span>
+            <span class="skill-tag">Express</span>
+            <span class="skill-tag">RESTful API</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">Java</span>
+            <span class="skill-tag">FastAPI</span>
+            <span class="skill-tag">WebSocket</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="transition-delay: 0.2s;">
+      <h2 class="section-title">项目经验</h2>
+
+      <div class="project-card">
+        <div class="project-header">
+          <h3 class="project-name">AI心理健康助手平台</h3>
+          <span class="project-badge">独立开发</span>
+        </div>
+        <p class="project-meta">2025.10 - 2026.01</p>
+        <div class="tech-stack">
+          <span class="tech-tag">Vue3</span>
+          <span class="tech-tag">TypeScript</span>
+          <span class="tech-tag">Vite</span>
+          <span class="tech-tag">Element Plus</span>
+          <span class="tech-tag">Pinia</span>
+          <span class="tech-tag">Vue Router</span>
+          <span class="tech-tag">Node.js</span>
+          <span class="tech-tag">SSE流式对话</span>
+          <span class="tech-tag">ECharts</span>
+        </div>
+        <p class="project-desc">企业级AI心理健康服务平台，采用 TypeScript 开发，包含管理后台和用户端双端应用，实现AI智能咨询、情绪日志、知识库管理、数据分析等功能模块</p>
+        <ul class="project-results">
+          <li>基于 TypeScript + Vue3 开发完整项目，<span class="highlight">类型覆盖率 95%</span> 以上，代码可维护性高</li>
+          <li>实现 AI 流式对话功能，采用 SSE 技术实现<span class="highlight">打字机效果</span>，首字响应时间降至实时</li>
+          <li>封装 <span class="highlight">5 个通用组件</span>（TableSearch、PageHead、富文本编辑器等），<span class="highlight">组件复用率达
+              80%</span></li>
+          <li>集成 ECharts 实现 <span class="highlight">6 类数据可视化</span>图表，实现情绪趋势、咨询统计、用户活跃度等展示，支持实时刷新</li>
+          <li>使用 Pinia 实现全局状态管理，完成<span class="highlight">用户登录持久化、菜单折叠、路由导航守卫</span>等功能</li>
+        </ul>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <h3 class="project-name">AI智能工作流自动化平台</h3>
+          <span class="project-badge">独立开发</span>
+        </div>
+        <p class="project-meta">2026.02 - 2026.05</p>
+        <div class="tech-stack">
+          <span class="tech-tag">Vue3</span>
+          <span class="tech-tag">TypeScript</span>
+          <span class="tech-tag">LangChain</span>
+          <span class="tech-tag">OpenAI API</span>
+          <span class="tech-tag">Vector DB</span>
+          <span class="tech-tag">FastAPI</span>
+          <span class="tech-tag">WebSocket</span>
+          <span class="tech-tag">Node.js</span>
+        </div>
+        <p class="project-desc">基于 AI Agent 技术的智能工作流编排平台，支持可视化拖拽构建 AI 工作流，实现文档智能处理、多 Agent 协作、知识库问答等</p>
+        <ul class="project-results">
+          <li>设计可视化工作流编排引擎，支持 <span class="highlight">10+ 种节点类型</span>拖拽连接，<span class="highlight">工作流配置效率提升 60%</span>
+          </li>
+          <li>集成 LangChain 框架，实现 <span class="highlight">3 种 LLM 模型</span>无缝切换、<span class="highlight">Chain
+              链路编排</span>、Memory 记忆管理</li>
+          <li>实现 <span class="highlight">RAG 检索增强生成</span>，基于向量数据库构建私有知识库，<span class="highlight">文档问答准确率达 85%+</span>
+          </li>
+          <li>开发多 Agent 协作系统，支持任务自动分解、Agent 间通信，<span class="highlight">复杂任务处理效率提升 50%</span></li>
+          <li>使用 WebSocket 实现<span class="highlight">任务状态实时推送</span>，支持长时任务进度监控与结果回调</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" style="transition-delay: 0.25s;">
+      <h2 class="section-title">自我评价</h2>
+      <ul class="eval-list">
+        <li class="eval-item">
+          <span class="eval-dot"></span>
+          <span class="eval-text">对 AI 领域有浓厚兴趣，主动学习 Agent 开发和 AIGC 技术，具备 AI 工作流独立搭建能力</span>
+        </li>
+        <li class="eval-item">
+          <span class="eval-dot"></span>
+          <span class="eval-text">注重代码质量，追求工程化实践，具备良好的问题分析能力和团队协作精神</span>
+        </li>
+        <li class="eval-item">
+          <span class="eval-dot"></span>
+          <span class="eval-text">具备扎实的前端开发能力，代码规范意识强</span>
+        </li>
+      </ul>
+    </section>
+
+    <footer class="footer section">
+      <p>ONLINE RESUME · GENG ZHAOYUN · 2026</p>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -30px 0px'
+      });
+
+      var sections = document.querySelectorAll('.section');
+      sections.forEach(function (section, index) {
+        section.style.transitionDelay = (index * 0.06) + 's';
+        observer.observe(section);
+      });
+
+      document.addEventListener('DOMContentLoaded', function () {
+        var header = document.querySelector('.header');
+        if (header) {
+          header.classList.add('visible');
+        }
+      });
+
+      setTimeout(function () {
+        var header = document.querySelector('.header');
+        if (header && !header.classList.contains('visible')) {
+          header.classList.add('visible');
+        }
+      }, 100);
+    })();
+  </script>
+
+</body>
+
+</html>
